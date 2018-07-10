@@ -5,58 +5,6 @@ const path = require("path");
 const glob = require("glob");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 
-/* var srcDir = path.resolve(process.cwd(), "src");
-
-var entries = function() {
-  var jsDir = path.resolve(srcDir, "js");
-  var entryFiles = glob.sync(jsDir + "/".js);
-  var map = {};
-
-  for (var i = 0; i < entryFiles.length; i++) {
-    var filePath = entryFiles[i];
-    var filename = filePath.substring(
-      filePath.lastIndexOf("/") + 1,
-      filePath.lastIndexOf(".")
-    );
-    map[filename] = filePath;
-  }
-  return map;
-}; */
-
-/* // 获取html-webpack-plugin参数的方法
-var getHtmlConfig = function(options) {
-  return {
-    template: `./src/views/${options.name}/index.html`,
-    filename: `${options.name}.html`,
-    // favicon: './favicon.ico',
-    title: options.title,
-    inject: true,
-    hash: true, //开启hash ?[hash]
-    chunks: options.chunks, //页面要引入的包
-    minify: {
-      removeComments: true, //移除HTML中的注释
-      collapseWhitespace: true, //折叠空白区域 也就是压缩代码
-      removeAttributeQuotes: true, //去除属性引用
-      removeScriptTypeAttributes: true,
-      removeStyleLinkTypeAttributes: true
-    }
-  };
-};
-//配置页面
-const htmlArray = [
-  {
-    _html: "index",
-    title: "首页",
-    chunks: ["index", "commons", "list", "vendor"] //页面用到的vendor模块
-  },
-  {
-    _html: "about",
-    title: "登录",
-    chunks: ["about", "commons", "list", "vendor"]
-  }
-];
-//自动生成html模板 */
-
 const resourceArray = ["index", "about"];
 
 function generateEntry(data) {
@@ -69,6 +17,25 @@ function generateEntry(data) {
     ];
   }
   return entryObject;
+}
+
+function generateHtml(data) {
+  var htmlArray = [];
+  for (var i = 0; i < data.length; i++) {
+    array.push({
+      filename: ""+data[i]+".html",
+      template: "./src/views/"+data[i]+"/"+data[i]+".html",
+      hash: true,
+      chunks: [data[i], "commons", "list", "vendor"],
+      minify: {
+        removeAttributeQuotes: true,
+        removeComments: true,
+        collapseWhitespace: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true
+      }
+    })
+    return htmlArray
 }
 
 const config = {
@@ -84,10 +51,7 @@ const config = {
   },
   plugins: [
     new CleanWebpackPlugin(["dist"]),
-    /* htmlArray.forEach(element => {
-      new htmlWebpackPlugin(getHtmlConfig(element));
-    }), */
-    new HtmlWebpackPlugin({
+    /* new HtmlWebpackPlugin({
       filename: "index.html",
       // template: "./src/index/index.html",
       template: path.resolve(__dirname, "src/views", "index/index.html"),
@@ -113,7 +77,7 @@ const config = {
         removeScriptTypeAttributes: true,
         removeStyleLinkTypeAttributes: true
       }
-    }),
+    }), */
     new copyWebpackPlugin([
       {
         from: path.resolve(__dirname, "./src/static"),
