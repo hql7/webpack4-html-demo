@@ -1,4 +1,14 @@
 # webpack4-html-demo
+
+> npm install
+加载依赖
+
+> npm run start
+运行项目
+
+> npm run build
+打包项目
+
 ###一个普通html项目的打包方案
 
 >适合普通html多页面打包
