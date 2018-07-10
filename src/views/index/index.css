@@ -1,0 +1,12 @@
+.aa {
+  width: 200px;
+  height: 200px;
+  background-color: crimson;
+}
+
+.img-box {
+  width: 200px;
+  height: 200px;
+  background: url("../../assets/img/0.jpg") 0 0 no-repeat;
+  background-size: 100% 100%;
+}
