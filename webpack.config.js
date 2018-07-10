@@ -22,20 +22,23 @@ function generateEntry(data) {
 function generateHtml(data) {
   var htmlArray = [];
   for (var i = 0; i < data.length; i++) {
-    array.push({
-      filename: ""+data[i]+".html",
-      template: "./src/views/"+data[i]+"/"+data[i]+".html",
-      hash: true,
-      chunks: [data[i], "commons", "list", "vendor"],
-      minify: {
-        removeAttributeQuotes: true,
-        removeComments: true,
-        collapseWhitespace: true,
-        removeScriptTypeAttributes: true,
-        removeStyleLinkTypeAttributes: true
-      }
-    })
-    return htmlArray
+    htmlArray.push(
+      new HtmlWebpackPlugin({
+        filename: "" + data[i] + ".html",
+        template: "./src/views/" + data[i] + "/" + data[i] + ".html",
+        hash: true,
+        chunks: ["" + data[i] + "", "commons", "list", "vendor"],
+        minify: {
+          removeAttributeQuotes: true,
+          removeComments: true,
+          collapseWhitespace: true,
+          removeScriptTypeAttributes: true,
+          removeStyleLinkTypeAttributes: true
+        }
+      })
+    );
+  }
+  return htmlArray;
 }
 
 const config = {
@@ -51,6 +54,7 @@ const config = {
   },
   plugins: [
     new CleanWebpackPlugin(["dist"]),
+    ...generateHtml(resourceArray),
     /* new HtmlWebpackPlugin({
       filename: "index.html",
       // template: "./src/index/index.html",
@@ -110,7 +114,7 @@ const config = {
         },
         //第三方组件
         vendor: {
-          // test: /node_modules/,
+          test: /node_modules/,
           chunks: "initial",
           name: "vendor",
           priority: 10,

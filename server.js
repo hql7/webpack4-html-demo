@@ -10,6 +10,6 @@ app.use(
   webpackDevMiddleware(compiler, { publicPath: config.output.publicPath })
 );
 
-app.listen(1111, function() {
+app.listen(1112, function() {
   console.log('port 1111 open');
 });
