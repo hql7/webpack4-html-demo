@@ -5,20 +5,36 @@ const path = require("path");
 const glob = require("glob");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 
-const resourceArray = ["index", "about"];
+// 自动读取views目录
+var srcDir = path.resolve("./src/views/**/*.html");
+var pathArray = glob.sync(srcDir);
 
+function generateFile(data) {
+  var fileArray = [];
+  for (var i = 0; i < data.length; i++) {
+    var item = data[i].split("/");
+    fileArray.push(item[item.length - 2]);
+  }
+  return fileArray;
+}
+var resourceArray = generateFile(pathArray);
+
+// const resourceArray = ["index", "about"];
+
+// 自动生成入口
 function generateEntry(data) {
   var entryObject = {};
   for (var i = 0; i < data.length; i++) {
     entryObject[data[i]] = [
+      "./src/main.js",
       "./src/views/" + data[i] + "/" + data[i] + ".css",
-      "./src/views/" + data[i] + "/" + data[i] + ".js",
-      "./src/main.js"
+      "./src/views/" + data[i] + "/" + data[i] + ".js"
     ];
   }
   return entryObject;
 }
 
+// 自动生成html
 function generateHtml(data) {
   var htmlArray = [];
   for (var i = 0; i < data.length; i++) {
@@ -27,7 +43,7 @@ function generateHtml(data) {
         filename: "" + data[i] + ".html",
         template: "./src/views/" + data[i] + "/" + data[i] + ".html",
         hash: true,
-        chunks: ["" + data[i] + "", "commons", "list", "vendor"],
+        chunks: ["bundle", "commons", "vendor", "" + data[i] + ""],
         minify: {
           removeAttributeQuotes: true,
           removeComments: true,
@@ -94,7 +110,7 @@ const config = {
   ],
   optimization: {
     runtimeChunk: {
-      name: "list"
+      name: "bundle"
     },
     splitChunks: {
       chunks: "initial",

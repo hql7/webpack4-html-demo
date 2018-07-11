@@ -1,6 +1,3 @@
-import "./about.css";
-/* import "../../commons/css/clear.css";
-import "../../commons/js/nav"; */
 
 var dom = document.querySelector(".cc");
 dom.innerHTML = "to index";
